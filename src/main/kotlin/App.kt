@@ -23,15 +23,16 @@ class App {
 
             when {
                 input == "등록" -> wiseSayingController.write()
-                input == "목록" -> wiseSayingController.list()
+                input.startsWith("목록") -> wiseSayingController.list(input)
 
-                input.startsWith("삭제?") -> {
-                    val id = input.substringAfter("id=").toIntOrNull()
+
+                input.startsWith("삭제") -> {
+                    val id = input.substringAfter("삭제?id=").toIntOrNull()
                     if (id != null) wiseSayingController.delete(id) else println("올바른 id를 입력해주세요.")
                 }
 
-                input.startsWith("수정?") -> {
-                    val id = input.substringAfter("id=").toIntOrNull()
+                input.startsWith("수정") -> {
+                    val id = input.substringAfter("수정?id=").toIntOrNull()
                     if (id != null) wiseSayingController.modify(id) else println("올바른 id를 입력해주세요.")
                 }
 

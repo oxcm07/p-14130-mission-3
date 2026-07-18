@@ -16,6 +16,14 @@ class WiseSayingRepository {
 
     fun findById(id: Int): WiseSaying? = wiseSayings.find { it.id == id }
 
+    fun findByKeyword(keywordType: String, keyword: String): List<WiseSaying> {
+        return when (keywordType) {
+            "content" -> wiseSayings.filter { it.content.contains(keyword) }
+            "author" -> wiseSayings.filter { it.author.contains(keyword) }
+            else -> emptyList()
+        }
+    }
+
     fun deleteById(id: Int): Boolean {
         return wiseSayings.removeIf { it.id == id }
     }

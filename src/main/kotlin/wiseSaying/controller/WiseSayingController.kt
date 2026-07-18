@@ -13,11 +13,35 @@ class WiseSayingController(private val wiseSayingService: WiseSayingService) {
         println("${id}번 명언이 등록되었습니다.")
     }
 
-    fun list() {
-        println("번호 / 작가 / 명언")
-        println("----------------------")
-        wiseSayingService.findAll().asReversed().forEach {
-            println("${it.id} / ${it.author} / ${it.content}")
+    fun list(input: String) {
+        val queryParams = input.substringAfter("목록?", "")
+        if (queryParams.isEmpty() || !queryParams.contains("=")) {
+            println("번호 / 작가 / 명언")
+            println("----------------------")
+            wiseSayingService.findAll().asReversed().forEach {
+                println("${it.id} / ${it.author} / ${it.content}")
+            }
+            return
+        }
+
+        val params = queryParams.split("&").associate { param ->
+            val parts = param.split("=", limit = 2)
+            parts[0] to parts.getOrElse(1) { "" }
+        }
+
+        val keywordType = params["keywordType"] ?: ""
+        val keyword = params["keyword"] ?: ""
+
+        if (keywordType.isNotEmpty() && keyword.isNotEmpty()) {
+            println("----------------------")
+            println("검색타입 : $keywordType")
+            println("검색어 : $keyword")
+            println("----------------------")
+            println("번호 / 작가 / 명언")
+            println("----------------------")
+            wiseSayingService.findByKeyword(keywordType, keyword).asReversed().forEach {
+                println("${it.id} / ${it.author} / ${it.content}")
+            }
         }
     }
 

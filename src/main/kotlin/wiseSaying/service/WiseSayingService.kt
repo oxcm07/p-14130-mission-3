@@ -10,6 +10,8 @@ class WiseSayingService(private val wiseSayingRepository: WiseSayingRepository) 
 
     fun findById(id: Int) = wiseSayingRepository.findById(id)
 
+    fun findByKeyword(keywordType: String, keyword: String) = wiseSayingRepository.findByKeyword(keywordType, keyword)
+
     fun delete(id: Int): Boolean {
         return wiseSayingRepository.deleteById(id)
     }
