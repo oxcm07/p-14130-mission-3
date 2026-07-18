@@ -2,15 +2,14 @@ package com.wiseSaying.controller
 
 import com.wiseSaying.service.WiseSayingService
 
-class WiseSayingController {
-    val wiseSayingService = WiseSayingService()
+class WiseSayingController(private val wiseSayingService: WiseSayingService) {
 
     fun write() {
         print("명언 : ")
         val content = readlnOrNull() ?: ""
         print("작가 : ")
         val author = readlnOrNull() ?: ""
-        val id = wiseSayingService.add(content, author)
+        val id = wiseSayingService.save(content, author)
         println("${id}번 명언이 등록되었습니다.")
     }
 
@@ -19,6 +18,15 @@ class WiseSayingController {
         println("----------------------")
         wiseSayingService.findAll().asReversed().forEach {
             println("${it.id} / ${it.author} / ${it.content}")
+        }
+    }
+
+    fun delete(id: Int) {
+        val isDeleted = wiseSayingService.delete(id)
+        if (isDeleted) {
+            println("${id}번 명언이 삭제되었습니다.")
+        } else {
+            println("${id}번 명언은 존재하지 않습니다.")
         }
     }
 }

@@ -1,9 +1,13 @@
 package com
 
 import com.wiseSaying.controller.WiseSayingController
+import com.wiseSaying.repository.WiseSayingRepository
+import com.wiseSaying.service.WiseSayingService
 
 class App {
-    val wiseSayingController = WiseSayingController()
+    val wiseSayingRepository = WiseSayingRepository()
+    val wiseSayingService = WiseSayingService(wiseSayingRepository)
+    val wiseSayingController = WiseSayingController(wiseSayingService)
 
     fun run() {
         println("== 명언 앱 ==")
@@ -20,6 +24,11 @@ class App {
             when {
                 input == "등록" -> wiseSayingController.write()
                 input == "목록" -> wiseSayingController.list()
+
+                input.startsWith("삭제?") -> {
+                    val id = input.substringAfter("삭제?id=").toIntOrNull()
+                    if (id != null) wiseSayingController.delete(id) else println("올바른 id를 입력해주세요.")
+                }
             }
         }
     }

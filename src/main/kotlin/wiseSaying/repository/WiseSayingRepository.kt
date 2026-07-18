@@ -6,11 +6,15 @@ class WiseSayingRepository {
     val wiseSayings = mutableListOf<WiseSaying>()
     var count = 0
 
-    fun add(content: String, author: String): Int {
+    fun save(content: String, author: String): Int {
         ++count
         wiseSayings.add(WiseSaying(count, content, author))
         return count
     }
 
     fun findAll(): List<WiseSaying> = wiseSayings
+
+    fun deleteById(id: Int): Boolean {
+        return wiseSayings.removeIf { it.id == id }
+    }
 }
