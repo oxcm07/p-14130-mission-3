@@ -84,6 +84,6 @@ class WiseSayingController(private val wiseSayingService: WiseSayingService) {
     }
 
     private fun parseId(input: String): Int? {
-        return input.substringAfter("id=", "").toIntOrNull()
+        return input.substringAfter("?id=", "").toIntOrNull()
     }
 }
