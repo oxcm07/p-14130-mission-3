@@ -32,22 +32,11 @@ class App(private val loadInitData: Boolean = true) {
                 input == "등록" -> wiseSayingController.write()
                 input.startsWith("목록") -> wiseSayingController.list(input)
 
-                input.startsWith("삭제") -> {
-                    val id = parseId(input)
-                    if (id != null) wiseSayingController.delete(id) else println("올바른 id를 입력해주세요.")
-                }
-
-                input.startsWith("수정") -> {
-                    val id = parseId(input)
-                    if (id != null) wiseSayingController.modify(id) else println("올바른 id를 입력해주세요.")
-                }
+                input.startsWith("삭제") -> wiseSayingController.delete(input)
+                input.startsWith("수정") -> wiseSayingController.modify(input)
 
                 else -> println("존재하지 않는 명령어입니다.")
             }
         }
-    }
-
-    private fun parseId(input: String): Int? {
-        return input.substringAfter("id=", "").toIntOrNull()
     }
 }

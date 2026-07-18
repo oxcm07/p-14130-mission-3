@@ -48,7 +48,12 @@ class WiseSayingController(private val wiseSayingService: WiseSayingService) {
         println("페이지 : $pageNav")
     }
 
-    fun delete(id: Int) {
+    fun delete(input: String) {
+        val id = parseId(input)
+        if (id == null) {
+            println("올바른 id를 입력해주세요.")
+            return
+        }
         val isDeleted = wiseSayingService.delete(id)
         if (isDeleted) {
             println("${id}번 명언이 삭제되었습니다.")
@@ -57,7 +62,12 @@ class WiseSayingController(private val wiseSayingService: WiseSayingService) {
         }
     }
 
-    fun modify(id: Int) {
+    fun modify(input: String) {
+        val id = parseId(input)
+        if (id == null) {
+            println("올바른 id를 입력해주세요.")
+            return
+        }
         val found = wiseSayingService.findById(id)
         if (found != null) {
             println("명언(기존) : ${found.content}")
@@ -71,5 +81,9 @@ class WiseSayingController(private val wiseSayingService: WiseSayingService) {
         } else {
             println("${id}번 명언은 존재하지 않습니다.")
         }
+    }
+
+    private fun parseId(input: String): Int? {
+        return input.substringAfter("id=", "").toIntOrNull()
     }
 }
