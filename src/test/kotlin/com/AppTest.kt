@@ -2,6 +2,7 @@ package com
 
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -34,6 +35,7 @@ class AppTest {
     }
 
     @Test
+    @DisplayName("CRUD")
     fun t1() {
         val input = """
             등록
@@ -85,6 +87,7 @@ class AppTest {
     }
 
     @Test
+    @DisplayName("검색")
     fun t2() {
         val input = """
             등록
@@ -132,6 +135,7 @@ class AppTest {
     }
 
     @Test
+    @DisplayName("페이징")
     fun t3() {
         val input = """
             목록
