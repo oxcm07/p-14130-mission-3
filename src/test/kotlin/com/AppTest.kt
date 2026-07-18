@@ -26,11 +26,11 @@ class AppTest {
         System.setOut(standardOut)
     }
 
-    private fun runWithInput(input: String) {
+    private fun runWithInput(input: String, loadInitData: Boolean = false) {
         val inputStream = ByteArrayInputStream(input.toByteArray())
         System.setIn(inputStream)
         
-        App().run()
+        App(loadInitData = loadInitData).run()
     }
 
     @Test
@@ -53,7 +53,7 @@ class AppTest {
             종료
         """.trimIndent()
 
-        runWithInput(input)
+        runWithInput(input, loadInitData = false)
 
         val output = outputStream.toString().replace("\r\n", "\n").trim()
 
@@ -65,6 +65,8 @@ class AppTest {
             ----------------------
             2 / 작자미상 / 과거에 집착하지 마라.
             1 / 작자미상 / 현재를 사랑하라.
+            ----------------------
+            페이지 : [1]
             명령) 1번 명언이 삭제되었습니다.
             명령) 1번 명언은 존재하지 않습니다.
             명령) 3번 명언은 존재하지 않습니다.
@@ -74,6 +76,8 @@ class AppTest {
             명령) 번호 / 작가 / 명언
             ----------------------
             2 / 홍길동 / 현재와 자신을 사랑하라.
+            ----------------------
+            페이지 : [1]
             명령) 프로그램을 종료합니다.
         """.trimIndent()
 
@@ -94,7 +98,7 @@ class AppTest {
             종료
         """.trimIndent()
 
-        runWithInput(input)
+        runWithInput(input, loadInitData = false)
 
         val output = outputStream.toString().replace("\r\n", "\n").trim()
 
@@ -109,6 +113,8 @@ class AppTest {
             번호 / 작가 / 명언
             ----------------------
             2 / 작자미상 / 과거에 집착하지 마라.
+            ----------------------
+            페이지 : [1]
             명령) ----------------------
             검색타입 : author
             검색어 : 작자
@@ -117,6 +123,46 @@ class AppTest {
             ----------------------
             2 / 작자미상 / 과거에 집착하지 마라.
             1 / 작자미상 / 현재를 사랑하라.
+            ----------------------
+            페이지 : [1]
+            명령) 프로그램을 종료합니다.
+        """.trimIndent()
+
+        assertEquals(expected, output)
+    }
+
+    @Test
+    fun t3() {
+        val input = """
+            목록
+            목록?page=2
+            종료
+        """.trimIndent()
+
+        runWithInput(input, loadInitData = true)
+
+        val output = outputStream.toString().replace("\r\n", "\n").trim()
+
+        val expected = """
+            == 명언 앱 ==
+            명령) 번호 / 작가 / 명언
+            ----------------------
+            10 / 작자미상 10 / 명언 10
+            9 / 작자미상 9 / 명언 9
+            8 / 작자미상 8 / 명언 8
+            7 / 작자미상 7 / 명언 7
+            6 / 작자미상 6 / 명언 6
+            ----------------------
+            페이지 : [1] / 2
+            명령) 번호 / 작가 / 명언
+            ----------------------
+            5 / 작자미상 5 / 명언 5
+            4 / 작자미상 4 / 명언 4
+            3 / 작자미상 3 / 명언 3
+            2 / 작자미상 2 / 명언 2
+            1 / 작자미상 1 / 명언 1
+            ----------------------
+            페이지 : 1 / [2]
             명령) 프로그램을 종료합니다.
         """.trimIndent()
 

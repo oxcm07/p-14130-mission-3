@@ -15,34 +15,37 @@ class WiseSayingController(private val wiseSayingService: WiseSayingService) {
 
     fun list(input: String) {
         val queryParams = input.substringAfter("목록?", "")
-        if (queryParams.isEmpty() || !queryParams.contains("=")) {
-            println("번호 / 작가 / 명언")
-            println("----------------------")
-            wiseSayingService.findAll().asReversed().forEach {
-                println("${it.id} / ${it.author} / ${it.content}")
-            }
-            return
-        }
-
         val params = queryParams.split("&").associate { param ->
             val parts = param.split("=", limit = 2)
             parts[0] to parts.getOrElse(1) { "" }
         }
 
-        val keywordType = params["keywordType"] ?: ""
-        val keyword = params["keyword"] ?: ""
+        val page = params["page"]?.toIntOrNull() ?: 1
+        val keywordType = params["keywordType"]
+        val keyword = params["keyword"]
 
-        if (keywordType.isNotEmpty() && keyword.isNotEmpty()) {
+        val (pagedList, totalPages) = wiseSayingService.findAll(page, keywordType, keyword)
+
+        if (keywordType != null && keyword != null) {
             println("----------------------")
             println("검색타입 : $keywordType")
             println("검색어 : $keyword")
             println("----------------------")
             println("번호 / 작가 / 명언")
             println("----------------------")
-            wiseSayingService.findByKeyword(keywordType, keyword).asReversed().forEach {
-                println("${it.id} / ${it.author} / ${it.content}")
-            }
+        } else {
+            println("번호 / 작가 / 명언")
+            println("----------------------")
         }
+
+        pagedList.forEach {
+            println("${it.id} / ${it.author} / ${it.content}")
+        }
+        println("----------------------")
+        val pageNav = (1..totalPages).joinToString(" / ") { i ->
+            if (i == page) "[$i]" else "$i"
+        }
+        println("페이지 : $pageNav")
     }
 
     fun delete(id: Int) {
