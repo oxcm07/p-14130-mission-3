@@ -19,6 +19,7 @@ class App {
 
             when {
                 input == "등록" -> wiseSayingController.write()
+                input == "목록" -> wiseSayingController.list()
             }
         }
     }

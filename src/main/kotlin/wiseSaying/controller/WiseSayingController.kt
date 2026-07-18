@@ -13,4 +13,12 @@ class WiseSayingController {
         val id = wiseSayingService.add(content, author)
         println("${id}번 명언이 등록되었습니다.")
     }
+
+    fun list() {
+        println("번호 / 작가 / 명언")
+        println("----------------------")
+        wiseSayingService.findAll().asReversed().forEach {
+            println("${it.id} / ${it.author} / ${it.content}")
+        }
+    }
 }

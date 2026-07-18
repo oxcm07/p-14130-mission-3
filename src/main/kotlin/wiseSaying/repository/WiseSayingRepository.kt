@@ -11,4 +11,6 @@ class WiseSayingRepository {
         wiseSayings.add(WiseSaying(count, content, author))
         return count
     }
+
+    fun findAll(): List<WiseSaying> = wiseSayings
 }
