@@ -29,4 +29,20 @@ class WiseSayingController(private val wiseSayingService: WiseSayingService) {
             println("${id}번 명언은 존재하지 않습니다.")
         }
     }
+
+    fun modify(id: Int) {
+        val found = wiseSayingService.findById(id)
+        if (found != null) {
+            println("명언(기존) : ${found.content}")
+            print("명언 : ")
+            val newContent = readlnOrNull() ?: ""
+            println("작가(기존) : ${found.author}")
+            print("작가 : ")
+            val newAuthor = readlnOrNull() ?: ""
+            wiseSayingService.update(id, newContent, newAuthor)
+            println("${id}번 명언이 수정되었습니다.")
+        } else {
+            println("${id}번 명언은 존재하지 않습니다.")
+        }
+    }
 }

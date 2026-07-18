@@ -26,9 +26,16 @@ class App {
                 input == "목록" -> wiseSayingController.list()
 
                 input.startsWith("삭제?") -> {
-                    val id = input.substringAfter("삭제?id=").toIntOrNull()
+                    val id = input.substringAfter("id=").toIntOrNull()
                     if (id != null) wiseSayingController.delete(id) else println("올바른 id를 입력해주세요.")
                 }
+
+                input.startsWith("수정?") -> {
+                    val id = input.substringAfter("id=").toIntOrNull()
+                    if (id != null) wiseSayingController.modify(id) else println("올바른 id를 입력해주세요.")
+                }
+
+                else -> println("존재하지 않는 명령어입니다.")
             }
         }
     }
